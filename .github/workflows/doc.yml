@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Sphinx Doc
+
+on:
+  push:
+    paths:
+      - "docs/**"
+      - ".github/workflows/doc.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build HTML
+        uses: ammaraskar/sphinx-action@master
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-docs
+          path: docs/_build/html/
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          publish_dir: docs/_build/html
